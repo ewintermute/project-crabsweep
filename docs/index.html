@@ -3,169 +3,444 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crabsweep Dashboard</title>
+<title>CrabSweep — Research Opportunity Dashboard</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --pink: #FF2060;
-    --bg: #1b1b1b;
-    --bg2: #111;
-    --surface: #252525;
-    --border: #333;
-    --text: #fff;
-    --muted: #aaa;
-    --green: #00cc66;
-    --yellow: #ffcc00;
-    --red: #ff4422;
+    --bg:        #0f1117;
+    --bg2:       #161b22;
+    --surface:   #1c2128;
+    --surface2:  #22272e;
+    --border:    #30363d;
+    --text:      #e6edf3;
+    --muted:     #7d8590;
+    --accent:    #2f81f7;
+    --accent-dim: rgba(47,129,247,0.15);
+    --green:     #3fb950;
+    --green-dim: rgba(63,185,80,0.15);
+    --yellow:    #d29922;
+    --yellow-dim: rgba(210,153,34,0.15);
+    --red:       #f85149;
+    --red-dim:   rgba(248,81,73,0.15);
+    --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
   }
-  body { background: var(--bg); color: var(--text); font-family: Arial, "Helvetica Neue", sans-serif; font-size: 14px; }
 
-  /* NAV */
-  nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-size: 22px; font-weight: 900; }
-  .logo .l1 { color: #fff; }
-  .logo .l2 { background: var(--pink); color: #000; padding: 1px 9px; border-radius: 4px; margin-left: 4px; box-shadow: 0 0 8px rgba(255,32,96,0.8), 0 0 20px rgba(255,32,96,0.3); }
-  .nav-right { font-size: 12px; color: var(--muted); }
-  #last-run { color: var(--pink); font-weight: 700; }
-
-  /* HEADER */
-  .header { padding: 28px 32px 0; }
-  .header h1 { font-size: 28px; font-weight: 900; margin-bottom: 6px; }
-  .header p { color: var(--muted); font-size: 14px; }
-  .header .sub { color: var(--pink); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-
-  /* STATS */
-  .stats { display: flex; gap: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 24px 0 0; }
-  .stat { flex: 1; padding: 16px 24px; border-right: 1px solid var(--border); text-align: center; }
-  .stat:last-child { border-right: none; }
-  .stat .n { font-size: 30px; font-weight: 900; color: var(--pink); text-shadow: 0 0 12px rgba(255,32,96,0.4); line-height: 1; }
-  .stat .l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
-
-  /* CONTROLS */
-  .controls { padding: 16px 32px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); }
-  .controls input {
-    background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    padding: 7px 12px; border-radius: 3px; font-size: 13px; width: 240px; outline: none;
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
   }
-  .controls input:focus { border-color: var(--pink); }
-  .controls select {
-    background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    padding: 7px 10px; border-radius: 3px; font-size: 13px; outline: none;
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
-  .controls label { font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .topbar-logo .icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+  .topbar-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: var(--font-mono);
+  }
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 4px var(--green);
+    display: inline-block;
+    margin-right: 5px;
+  }
+  #last-run { font-family: var(--font-mono); color: var(--text); font-size: 12px; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+  /* ── PAGE HEADER ── */
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .page-header p { color: var(--muted); font-size: 13px; }
+
+  /* ── STAT CARDS ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+  .stat-card .label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .stat-card .value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .stat-card .sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: var(--font-mono);
+  }
+  .val-blue   { color: var(--accent); }
+  .val-green  { color: var(--green); }
+  .val-yellow { color: var(--yellow); }
+  .val-white  { color: var(--text); }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .toolbar input[type="text"] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 13px;
+    padding: 6px 12px;
+    outline: none;
+    width: 240px;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .toolbar input[type="text"]:focus { border-color: var(--accent); }
+  .toolbar input[type="text"]::placeholder { color: var(--muted); }
+  .toolbar select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 13px;
+    padding: 6px 10px;
+    outline: none;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .toolbar-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
   .spacer { flex: 1; }
-  #count { font-size: 12px; color: var(--muted); }
-
-  /* TABLE */
-  .table-wrap { padding: 0 32px 48px; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; margin-top: 0; }
-  thead th {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--muted); text-align: left; padding: 12px 10px;
-    border-bottom: 2px solid var(--pink); cursor: pointer; user-select: none; white-space: nowrap;
+  #count {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
   }
-  thead th:hover { color: var(--pink); }
-  thead th.sorted { color: var(--pink); }
-  thead th .arrow { margin-left: 4px; opacity: 0.6; }
-  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    background: var(--surface);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  thead th:hover { color: var(--text); }
+  thead th.sorted { color: var(--accent); }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: var(--surface); }
-  tbody td { padding: 12px 10px; vertical-align: top; }
+  tbody td { padding: 12px 14px; vertical-align: top; }
 
-  .post-title a { color: var(--text); text-decoration: none; font-weight: 700; font-size: 14px; line-height: 1.3; }
-  .post-title a:hover { color: var(--pink); }
-  .post-excerpt { color: var(--muted); font-size: 12px; line-height: 1.5; margin-top: 4px; max-width: 420px; }
-  .post-meta { font-size: 11px; color: var(--muted); margin-top: 6px; }
-  .post-meta span { margin-right: 10px; }
+  /* ── SCORE CELL ── */
+  .score-cell { width: 80px; }
+  .score-value {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .score-bar-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 6px;
+    width: 52px;
+  }
+  .score-bar-fill { height: 100%; border-radius: 2px; }
 
-  /* SCORE BARS */
-  .score-cell { min-width: 80px; }
-  .score-big { font-size: 22px; font-weight: 900; line-height: 1; }
-  .score-bar-wrap { height: 3px; background: var(--border); border-radius: 2px; margin-top: 5px; width: 60px; }
-  .score-bar { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .c-green  { color: var(--green); }
+  .c-yellow { color: var(--yellow); }
+  .c-red    { color: var(--red); }
+  .b-green  { background: var(--green); }
+  .b-yellow { background: var(--yellow); }
+  .b-red    { background: var(--red); }
 
+  /* ── POST CELL ── */
+  .post-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 5px;
+  }
+  .post-title a { color: var(--text); text-decoration: none; }
+  .post-title a:hover { color: var(--accent); }
+  .post-excerpt {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 380px;
+    margin-bottom: 6px;
+  }
+  .post-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+  .post-meta .author { color: var(--accent); }
+
+  /* ── SUB SCORES ── */
   .sub-scores { display: flex; flex-direction: column; gap: 5px; min-width: 120px; }
   .sub-row { display: flex; align-items: center; gap: 6px; }
-  .sub-label { font-size: 10px; color: var(--muted); width: 52px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.04em; }
-  .sub-bar-wrap { flex: 1; height: 3px; background: var(--border); border-radius: 2px; }
-  .sub-bar { height: 100%; border-radius: 2px; }
-  .sub-val { font-size: 11px; font-weight: 700; width: 16px; text-align: right; }
+  .sub-label {
+    font-size: 10px;
+    color: var(--muted);
+    width: 48px;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .sub-track { flex: 1; height: 3px; background: var(--border); border-radius: 2px; }
+  .sub-fill { height: 100%; border-radius: 2px; }
+  .sub-val {
+    font-size: 11px;
+    font-weight: 600;
+    width: 16px;
+    text-align: right;
+    font-family: var(--font-mono);
+  }
 
-  .rationale-cell { max-width: 280px; font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .mve-cell { max-width: 220px; font-size: 12px; color: var(--text); line-height: 1.5; font-style: italic; }
+  /* ── RATIONALE / MVE ── */
+  .rationale-cell {
+    max-width: 260px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .mve-cell {
+    max-width: 220px;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .bios-badge {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+  .bios-hint {
+    display: block;
+    margin-top: 5px;
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
 
-  /* SCORE COLORS */
-  .score-high { color: var(--green); }
-  .score-mid  { color: var(--yellow); }
-  .score-low  { color: var(--red); }
-  .bar-high   { background: var(--green); }
-  .bar-mid    { background: var(--yellow); }
-  .bar-low    { background: var(--red); }
+  /* ── DATE CELL ── */
+  .date-cell {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
 
-  /* EMPTY */
-  .empty { padding: 64px 32px; text-align: center; color: var(--muted); }
-  .empty h2 { font-size: 20px; font-weight: 900; margin-bottom: 8px; color: var(--text); }
-  .empty code { font-size: 13px; background: var(--surface); padding: 4px 10px; border-radius: 3px; display: inline-block; margin-top: 8px; color: var(--pink); }
+  /* ── EMPTY STATE ── */
+  .empty {
+    padding: 64px 24px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty h2 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .empty code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: var(--accent);
+    display: inline-block;
+    margin-top: 10px;
+  }
 
-  /* LOADING */
-  #loading { padding: 48px; text-align: center; color: var(--muted); display: none; }
+  @media (max-width: 900px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .toolbar { flex-wrap: wrap; }
+  }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo"><span class="l1">Crab</span><span class="l2">Sweep</span></div>
-  <div class="nav-right">Last run: <span id="last-run">—</span></div>
-</nav>
-
-<div class="header">
-  <div class="sub">🦀 Neophyte Labs · Beach.Science Monitor</div>
-  <h1>Research Opportunity Dashboard</h1>
-  <p>Beach.Science hypotheses scored against Neophyte Labs capabilities. Ranked by CrabScore.</p>
-</div>
-
-<div class="stats">
-  <div class="stat"><div class="n" id="stat-total">—</div><div class="l">Posts Scored</div></div>
-  <div class="stat"><div class="n" id="stat-high">—</div><div class="l">High Potential (≥7)</div></div>
-  <div class="stat"><div class="n" id="stat-avg">—</div><div class="l">Avg CrabScore</div></div>
-  <div class="stat"><div class="n" id="stat-new">—</div><div class="l">Added This Run</div></div>
-</div>
-
-<div class="controls">
-  <label>Search</label>
-  <input type="text" id="search" placeholder="title, author, keywords…">
-  <label>Min score</label>
-  <select id="min-score">
-    <option value="0">All</option>
-    <option value="5">≥ 5</option>
-    <option value="7">≥ 7</option>
-    <option value="8">≥ 8</option>
-  </select>
-  <div class="spacer"></div>
-  <span id="count"></span>
-</div>
-
-<div id="loading">Loading…</div>
-
-<div class="table-wrap">
-  <table id="table">
-    <thead>
-      <tr>
-        <th data-col="crab_score" class="sorted">CrabScore <span class="arrow">↓</span></th>
-        <th data-col="title">Post</th>
-        <th data-col="scores">Scores</th>
-        <th data-col="rationale">Rationale</th>
-        <th data-col="suggested_mve">Suggested MVE</th>
-        <th data-col="scored_at">Scored</th>
-      </tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <div id="empty" class="empty" style="display:none">
-    <h2>No data yet</h2>
-    <p>Run the sweep script to populate this dashboard.</p>
-    <code>python3 scripts/sweep.py</code>
+<header class="topbar">
+  <div class="topbar-logo">
+    <span class="icon">🦀</span>
+    CrabSweep
   </div>
-</div>
+  <span class="topbar-badge">Neophyte Labs</span>
+  <div class="topbar-right">
+    <span><span class="status-dot"></span>Live</span>
+    <span>Last sweep: <span id="last-run">—</span></span>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="page-header">
+    <h1>Research Opportunity Dashboard</h1>
+    <p>Beach.Science hypotheses ranked by CrabScore — feasibility within Neophyte Labs constraints.</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="label">Posts Scored</div>
+      <div class="value val-white" id="stat-total">—</div>
+      <div class="sub">from Beach.Science</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">High Potential</div>
+      <div class="value val-green" id="stat-high">—</div>
+      <div class="sub">CrabScore ≥ 7.0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Avg CrabScore</div>
+      <div class="value val-blue" id="stat-avg">—</div>
+      <div class="sub">across all posts</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">BIOS Analysed</div>
+      <div class="value val-yellow" id="stat-bios">—</div>
+      <div class="sub">deep dives run</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <span class="toolbar-label">Search</span>
+    <input type="text" id="search" placeholder="title, author, keyword…">
+    <span class="toolbar-label">Min score</span>
+    <select id="min-score">
+      <option value="0">All scores</option>
+      <option value="5">≥ 5.0</option>
+      <option value="6">≥ 6.0</option>
+      <option value="7">≥ 7.0</option>
+    </select>
+    <div class="spacer"></div>
+    <span id="count">—</span>
+  </div>
+
+  <div class="table-wrap">
+    <table id="table">
+      <thead>
+        <tr>
+          <th data-col="crab_score" class="sorted">Score ↓</th>
+          <th data-col="title">Hypothesis</th>
+          <th data-col="scores">Dimensions</th>
+          <th data-col="rationale">Rationale</th>
+          <th data-col="suggested_mve">Suggested MVE</th>
+          <th data-col="scored_at">Scored</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="empty" class="empty" style="display:none">
+      <h2>No data yet</h2>
+      <p>Run the sweep script to populate this dashboard.</p>
+      <code>python3 scripts/fetch_posts.py && python3 scripts/score_posts.py</code>
+    </div>
+  </div>
+
+</main>
 
 <script>
 let allPosts = [];
@@ -173,25 +448,28 @@ let sortCol = 'crab_score';
 let sortAsc = false;
 
 function scoreColor(n) {
-  if (n >= 7) return 'score-high';
-  if (n >= 5) return 'score-mid';
-  return 'score-low';
+  if (n >= 7) return 'c-green';
+  if (n >= 5) return 'c-yellow';
+  return 'c-red';
 }
 function barColor(n) {
-  if (n >= 7) return 'bar-high';
-  if (n >= 5) return 'bar-mid';
-  return 'bar-low';
+  if (n >= 7) return 'b-green';
+  if (n >= 5) return 'b-yellow';
+  return 'b-red';
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function fmtDate(iso) {
   if (!iso) return '—';
   const d = new Date(iso);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 }
-function subBar(label, val) {
-  const pct = Math.round((val / 10) * 100);
+function subRow(label, val) {
+  const pct = Math.round((val/10)*100);
   return `<div class="sub-row">
     <span class="sub-label">${label}</span>
-    <div class="sub-bar-wrap"><div class="sub-bar ${barColor(val)}" style="width:${pct}%"></div></div>
+    <div class="sub-track"><div class="sub-fill ${barColor(val)}" style="width:${pct}%"></div></div>
     <span class="sub-val ${scoreColor(val)}">${val}</span>
   </div>`;
 }
@@ -199,7 +477,7 @@ function subBar(label, val) {
 function render(posts) {
   const tbody = document.getElementById('tbody');
   const empty = document.getElementById('empty');
-  document.getElementById('count').textContent = `${posts.length} posts`;
+  document.getElementById('count').textContent = `${posts.length} result${posts.length!==1?'s':''}`;
 
   if (!posts.length) {
     tbody.innerHTML = '';
@@ -209,52 +487,47 @@ function render(posts) {
   empty.style.display = 'none';
 
   tbody.innerHTML = posts.map(p => {
-    const cs = (p.crab_score || 0).toFixed(1);
-    const pct = Math.round(((p.crab_score || 0) / 10) * 100);
+    const cs = (p.crab_score||0).toFixed(1);
+    const pct = Math.round(((p.crab_score||0)/10)*100);
     return `<tr>
       <td class="score-cell">
-        <div class="score-big ${scoreColor(p.crab_score || 0)}">${cs}</div>
-        <div class="score-bar-wrap"><div class="score-bar ${barColor(p.crab_score||0)}" style="width:${pct}%"></div></div>
+        <div class="score-value ${scoreColor(p.crab_score||0)}">${cs}</div>
+        <div class="score-bar-track"><div class="score-bar-fill ${barColor(p.crab_score||0)}" style="width:${pct}%"></div></div>
       </td>
       <td>
-        <div class="post-title"><a href="${p.post_url || '#'}" target="_blank">${escHtml(p.title || '—')}</a></div>
-        <div class="post-excerpt">${escHtml((p.body_excerpt || '').substring(0, 160))}…</div>
+        <div class="post-title"><a href="${esc(p.post_url||'#')}" target="_blank" rel="noopener">${esc(p.title||'—')}</a></div>
+        <div class="post-excerpt">${esc((p.body_excerpt||'').substring(0,160))}${p.body_excerpt?.length>160?'…':''}</div>
         <div class="post-meta">
-          <span>@${escHtml(p.author || '?')}</span>
-          <span>👍 ${p.likes || 0}</span>
-          <span>💬 ${p.comments || 0}</span>
+          <span class="author">@${esc(p.author||'?')}</span>
+          <span>👍 ${p.likes||0}</span>
+          <span>💬 ${p.comments||0}</span>
         </div>
       </td>
       <td>
         <div class="sub-scores">
-          ${subBar('Feasib.', p.feasibility || 0)}
-          ${subBar('Relev.', p.relevance || 0)}
-          ${subBar('Novelty', p.novelty || 0)}
-          ${subBar('MVE', p.mve_ability || 0)}
+          ${subRow('Feasib',  p.feasibility||0)}
+          ${subRow('Relev',   p.relevance||0)}
+          ${subRow('Novelty', p.novelty||0)}
+          ${subRow('MVE',     p.mve_ability||0)}
         </div>
       </td>
-      <td class="rationale-cell">${escHtml(p.rationale || '—')}</td>
+      <td class="rationale-cell">${esc(p.rationale||'—')}</td>
       <td class="mve-cell">
-        ${escHtml(p.suggested_mve || '—')}
+        ${esc(p.suggested_mve||'—')}
         ${p.bios_analysis
-          ? `<div style="margin-top:6px"><span style="background:#1a3a2a;color:var(--green);border:1px solid #007733;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:0.06em">BIOS ✓</span></div>`
-          : `<div style="margin-top:6px"><span style="color:var(--muted);font-size:10px;letter-spacing:0.05em">run bios_deep_dive.py ${p.post_id.substring(0,8)}…</span></div>`
-        }
+          ? '<span class="bios-badge">BIOS ✓</span>'
+          : `<span class="bios-hint">bios_deep_dive.py ${(p.post_id||'').substring(0,8)}…</span>`}
       </td>
-      <td style="white-space:nowrap;color:var(--muted);font-size:12px">${fmtDate(p.scored_at)}</td>
+      <td class="date-cell">${fmtDate(p.scored_at)}</td>
     </tr>`;
   }).join('');
 }
 
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
 function filtered() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const min = parseFloat(document.getElementById('min-score').value) || 0;
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const min = parseFloat(document.getElementById('min-score').value)||0;
   return allPosts.filter(p => {
-    if ((p.crab_score || 0) < min) return false;
+    if ((p.crab_score||0) < min) return false;
     if (q) {
       const hay = `${p.title} ${p.author} ${p.body_excerpt} ${p.rationale}`.toLowerCase();
       if (!hay.includes(q)) return false;
@@ -264,12 +537,12 @@ function filtered() {
 }
 
 function sorted(posts) {
-  return [...posts].sort((a, b) => {
+  return [...posts].sort((a,b) => {
     let av = a[sortCol], bv = b[sortCol];
-    if (typeof av === 'string') av = av.toLowerCase();
-    if (typeof bv === 'string') bv = bv.toLowerCase();
-    if (av < bv) return sortAsc ? -1 : 1;
-    if (av > bv) return sortAsc ? 1 : -1;
+    if (typeof av==='string') av=av.toLowerCase();
+    if (typeof bv==='string') bv=bv.toLowerCase();
+    if (av<bv) return sortAsc?-1:1;
+    if (av>bv) return sortAsc?1:-1;
     return 0;
   });
 }
@@ -280,16 +553,14 @@ function update() { render(sorted(filtered())); }
 document.querySelectorAll('thead th[data-col]').forEach(th => {
   th.addEventListener('click', () => {
     const col = th.dataset.col;
-    if (sortCol === col) { sortAsc = !sortAsc; }
-    else { sortCol = col; sortAsc = col === 'title'; }
+    if (sortCol===col) { sortAsc=!sortAsc; }
+    else { sortCol=col; sortAsc=col==='title'; }
     document.querySelectorAll('thead th').forEach(t => {
       t.classList.remove('sorted');
-      const a = t.querySelector('.arrow');
-      if (a) a.textContent = '';
+      t.textContent = t.textContent.replace(/ [↑↓]$/,'');
     });
     th.classList.add('sorted');
-    const arrow = th.querySelector('.arrow');
-    if (arrow) arrow.textContent = sortAsc ? '↑' : '↓';
+    th.textContent += sortAsc ? ' ↑' : ' ↓';
     update();
   });
 });
@@ -297,31 +568,29 @@ document.querySelectorAll('thead th[data-col]').forEach(th => {
 document.getElementById('search').addEventListener('input', update);
 document.getElementById('min-score').addEventListener('change', update);
 
-// Load data
 async function load() {
   try {
     const resp = await fetch('data/scored_posts.json');
     if (!resp.ok) throw new Error('not found');
     const db = await resp.json();
-    allPosts = db.posts || [];
+    allPosts = db.posts||[];
 
-    // Stats
-    const high = allPosts.filter(p => (p.crab_score || 0) >= 7).length;
-    const avg = allPosts.length
-      ? (allPosts.reduce((s, p) => s + (p.crab_score || 0), 0) / allPosts.length).toFixed(1)
+    const high = allPosts.filter(p=>(p.crab_score||0)>=7).length;
+    const bios = allPosts.filter(p=>p.bios_analysis).length;
+    const avg  = allPosts.length
+      ? (allPosts.reduce((s,p)=>s+(p.crab_score||0),0)/allPosts.length).toFixed(1)
       : '—';
 
     document.getElementById('stat-total').textContent = allPosts.length;
-    document.getElementById('stat-high').textContent = high;
-    document.getElementById('stat-avg').textContent = avg;
-    document.getElementById('stat-new').textContent = '—';
-    document.getElementById('last-run').textContent = db.last_run
-      ? new Date(db.last_run).toLocaleString() : '—';
+    document.getElementById('stat-high').textContent  = high;
+    document.getElementById('stat-avg').textContent   = avg;
+    document.getElementById('stat-bios').textContent  = bios;
+    document.getElementById('last-run').textContent   = db.last_run
+      ? new Date(db.last_run).toLocaleString() : 'never';
 
     update();
   } catch(e) {
-    document.getElementById('empty').style.display = 'block';
-    document.getElementById('empty').querySelector('h2').textContent = 'No data yet';
+    document.getElementById('empty').style.display='block';
   }
 }
 
