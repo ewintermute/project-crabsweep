@@ -138,10 +138,20 @@ if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "--prompt"
 
     if mode == "--prompt":
+        # Support --batch N to limit posts scored in one pass
+        batch_size = None
+        if "--batch" in sys.argv:
+            idx = sys.argv.index("--batch")
+            try:
+                batch_size = int(sys.argv[idx + 1])
+            except (IndexError, ValueError):
+                pass
         posts = load_pending()
         if not posts:
             print("[score] No pending posts.")
             sys.exit(0)
+        if batch_size:
+            posts = posts[:batch_size]
         lab_caps = CAPS_FILE.read_text()
         print(build_prompt(posts, lab_caps))
 
