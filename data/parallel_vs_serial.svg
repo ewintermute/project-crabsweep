@@ -1,0 +1,241 @@
+<svg viewBox="0 0 820 460" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+
+  <defs>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#999"/>
+    </marker>
+  </defs>
+
+  <!-- SECTION LABELS -->
+  <text x="200" y="34" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Parallel Processing</text>
+  <text x="540" y="34" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Serial Processing</text>
+
+  <!-- Divider -->
+
+
+  <!-- ═══════════════════ PARALLEL SIDE ═══════════════════ -->
+
+  <text x="24" y="230" text-anchor="middle" font-size="11" fill="#666" transform="rotate(-90,24,230)">Time</text>
+  <line x1="36" y1="55" x2="36" y2="400" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <text x="185" y="68" text-anchor="middle" font-size="11" fill="#2563eb" font-weight="bold">Samples</text>
+
+  <!-- 8 blue sample circles — spread across wider box (x=75 to x=295, center=185) -->
+  <g fill="#4e8ef7" opacity="0.9">
+    <circle cx="90"  cy="88" r="10"/>
+    <circle cx="116" cy="88" r="10"/>
+    <circle cx="142" cy="88" r="10"/>
+    <circle cx="168" cy="88" r="10"/>
+    <circle cx="194" cy="88" r="10"/>
+    <circle cx="220" cy="88" r="10"/>
+    <circle cx="246" cy="88" r="10"/>
+    <circle cx="272" cy="88" r="10"/>
+  </g>
+
+  <!-- Bracket — spans circle edges -->
+  <line x1="86"  y1="104" x2="86"  y2="116" stroke="#555" stroke-width="1.5"/>
+  <line x1="86"  y1="116" x2="276" y2="116" stroke="#555" stroke-width="1.5"/>
+  <line x1="276" y1="104" x2="276" y2="116" stroke="#555" stroke-width="1.5"/>
+  <text x="185" y="129" text-anchor="middle" font-size="10" fill="#444">Automation capacity</text>
+  <line x1="185" y1="134" x2="185" y2="148" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!-- Process box: wider w=220 -->
+  <rect x="75" y="150" width="220" height="50" rx="6" fill="#4e8ef7" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="185" y="180" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Process</text>
+
+  <line x1="185" y1="202" x2="185" y2="216" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!-- Results box: wider w=220 -->
+  <rect x="75" y="218" width="220" height="66" rx="6" fill="#e0f2e9" stroke="#34a853" stroke-width="1.5"/>
+  <text x="185" y="237" text-anchor="middle" font-size="11" fill="#1a7a3c" font-weight="bold">Results</text>
+  <g fill="#34a853" opacity="0.95">
+    <circle cx="90"  cy="256" r="10"/>
+    <circle cx="116" cy="256" r="10"/>
+    <circle cx="142" cy="256" r="10"/>
+    <circle cx="168" cy="256" r="10"/>
+    <circle cx="194" cy="256" r="10"/>
+    <circle cx="220" cy="256" r="10"/>
+    <circle cx="246" cy="256" r="10"/>
+    <circle cx="272" cy="256" r="10"/>
+  </g>
+
+  <line x1="185" y1="286" x2="185" y2="300" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!-- Idle box: wider w=220 -->
+  <rect x="75" y="302" width="220" height="80" rx="6" fill="#f5f5f5" stroke="#cccccc" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="185" y="337" text-anchor="middle" font-size="11" fill="#aaa">Idle</text>
+  <text x="185" y="357" text-anchor="middle" font-size="10" fill="#bbb">(waiting for next batch)</text>
+
+  <!-- ═══════════════════ SERIAL SIDE ═══════════════════ -->
+
+  <text x="414" y="230" text-anchor="middle" font-size="11" fill="#666" transform="rotate(-90,414,230)">Time</text>
+  <line x1="426" y1="55" x2="426" y2="410" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!--
+    Row layout (cy = row center):
+      Blue circle:   cx=448, r=10, right edge=458
+      Bracket:       ticks x=458→466, bar at x=466
+      Arrow:         x=468→480
+      Process box:   x=482, w=54, h=20, centered on cy
+      Arrow:         x=538→550
+      Result box:    x=552, w=80, h=24
+        "Results" centered between x=552 and x=609 (left edge of circle at cx=618-r=9=609)
+        midpoint = (552+609)/2 = 580.5 ≈ 581
+        Green circle: cx=618, r=9
+    Row spacing: 30px, starting cy=83
+    11 rows: cy = 83,113,143,173,203,233,263,293,323,353,383
+  -->
+
+  <!-- ROW 1 cy=83 -->
+  <circle cx="448" cy="83" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="73" x2="466" y2="73" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="73" x2="466" y2="93" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="93" x2="466" y2="93" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="83" x2="480" y2="83" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="73" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="87" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="83" x2="550" y2="83" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="71" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="87" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="83" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 2 cy=113 -->
+  <circle cx="448" cy="113" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="103" x2="466" y2="103" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="103" x2="466" y2="123" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="123" x2="466" y2="123" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="113" x2="480" y2="113" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="103" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="117" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="113" x2="550" y2="113" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="101" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="117" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="113" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 3 cy=143 -->
+  <circle cx="448" cy="143" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="133" x2="466" y2="133" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="133" x2="466" y2="153" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="153" x2="466" y2="153" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="143" x2="480" y2="143" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="133" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="147" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="143" x2="550" y2="143" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="131" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="147" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="143" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 4 cy=173 -->
+  <circle cx="448" cy="173" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="163" x2="466" y2="163" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="163" x2="466" y2="183" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="183" x2="466" y2="183" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="173" x2="480" y2="173" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="163" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="177" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="173" x2="550" y2="173" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="161" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="177" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="173" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 5 cy=203 -->
+  <circle cx="448" cy="203" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="193" x2="466" y2="193" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="193" x2="466" y2="213" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="213" x2="466" y2="213" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="203" x2="480" y2="203" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="193" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="207" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="203" x2="550" y2="203" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="191" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="207" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="203" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 6 cy=233 -->
+  <circle cx="448" cy="233" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="223" x2="466" y2="223" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="223" x2="466" y2="243" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="243" x2="466" y2="243" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="233" x2="480" y2="233" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="223" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="237" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="233" x2="550" y2="233" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="221" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="237" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="233" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 7 cy=263 -->
+  <circle cx="448" cy="263" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="253" x2="466" y2="253" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="253" x2="466" y2="273" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="273" x2="466" y2="273" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="263" x2="480" y2="263" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="253" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="267" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="263" x2="550" y2="263" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="251" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="267" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="263" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 8 cy=293 -->
+  <circle cx="448" cy="293" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="283" x2="466" y2="283" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="283" x2="466" y2="303" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="303" x2="466" y2="303" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="293" x2="480" y2="293" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="283" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="297" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="293" x2="550" y2="293" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="281" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="297" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="293" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 9 cy=323 -->
+  <circle cx="448" cy="323" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="313" x2="466" y2="313" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="313" x2="466" y2="333" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="333" x2="466" y2="333" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="323" x2="480" y2="323" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="313" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="327" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="323" x2="550" y2="323" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="311" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="327" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="323" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 10 cy=353 -->
+  <circle cx="448" cy="353" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="343" x2="466" y2="343" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="343" x2="466" y2="363" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="363" x2="466" y2="363" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="353" x2="480" y2="353" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="343" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="357" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="353" x2="550" y2="353" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="341" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="357" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="353" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- ROW 11 cy=383 -->
+  <circle cx="448" cy="383" r="10" fill="#4e8ef7" opacity="0.9"/>
+  <line x1="458" y1="373" x2="466" y2="373" stroke="#555" stroke-width="1.2"/>
+  <line x1="466" y1="373" x2="466" y2="393" stroke="#555" stroke-width="1.2"/>
+  <line x1="458" y1="393" x2="466" y2="393" stroke="#555" stroke-width="1.2"/>
+  <line x1="468" y1="383" x2="480" y2="383" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="482" y="373" width="54" height="20" rx="4" fill="#4e8ef7" stroke="#2563eb" stroke-width="1"/>
+  <text x="509" y="387" text-anchor="middle" font-size="9" fill="#fff">Process</text>
+  <line x1="538" y1="383" x2="550" y2="383" stroke="#999" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <rect x="552" y="371" width="80" height="24" rx="4" fill="#e0f2e9" stroke="#34a853" stroke-width="1"/>
+  <text x="581" y="387" text-anchor="middle" font-size="9" fill="#1a7a3c" font-weight="bold">Results</text>
+  <circle cx="618" cy="383" r="9" fill="#34a853" opacity="0.95"/>
+
+  <!-- Continuation dots -->
+  <text x="448" y="408" text-anchor="middle" font-size="16" fill="#4e8ef7">⋮</text>
+  <text x="509" y="408" text-anchor="middle" font-size="16" fill="#4e8ef7">⋮</text>
+  <text x="592" y="408" text-anchor="middle" font-size="16" fill="#34a853">⋮</text>
+
+  <!-- Never idle text -->
+  <text x="540" y="428" text-anchor="middle" font-size="11" fill="#aaa" font-weight="bold">Never idle</text>
+  <text x="540" y="443" text-anchor="middle" font-size="10" fill="#bbb">(The CORE never sleeps)</text>
+
+</svg>
